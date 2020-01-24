@@ -1,0 +1,26 @@
+apiVersion: voyager.appscode.com/v1beta1
+kind: Ingress
+metadata:
+  name: ingress
+  namespace: demo-shared
+  annotations:
+   ingress.appscode.com/annotations-service: '{"external-dns.alpha.kubernetes.io/hostname" : "echo-demo.example.org,shared-demo.example.org"}'
+spec:
+  tls:
+  - secretName: tls-example
+    hosts:
+    - echo-demo.example.org
+    - shared-demo.example.org
+  rules:
+  - host: echo-demo.example.org
+    http:
+      paths:
+      - backend:
+          serviceName: echoserver.dev
+          servicePort: 80
+  - host: shared-demo.example.org
+    http:
+      paths:
+      - backend:
+          serviceName: hello.prod
+          servicePort: 80
