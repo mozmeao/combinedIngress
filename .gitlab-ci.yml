@@ -9,7 +9,7 @@ docker-build:
 #  before_script:
 #    - docker login -u "$CI_REGISTRY_USER" -p "$CI_REGISTRY_PASSWORD" $CI_REGISTRY
   script:
-    - docker build --pull -t "dockerhub_repo:`cat VERSION`" .
-    - docker push "dockerhub_repo:`cat VERSION`"
+    - docker build --pull -t "$dockerhub_repo:`cat VERSION`" .
+    - docker push "$dockerhub_repo:`cat VERSION`"
 #  only:
 #    - master
