@@ -1,15 +1,8 @@
-### Write a function that takes
-# Servicename
-# port
-# dns domain
-# from command line
-# andthen goes to git to get branchname and also dns predot names
-# then puts all that crazyness together
-# calls the helper functions to formulate the yaml and save it
-# then is all done
+#!/usr/bin/env python3
+
 import click
 
-from combinedIngress.helper import *
+from combinedIngress.helper import ingress_controller_generate, write_to_yaml
 
 
 @click.command()
@@ -34,7 +27,7 @@ def combine_ingress(servicename, port, dns_domain, sites):
         services.append(service_dict)
 
     services_dict = ingress_controller_generate(services)
-    write_to_yaml(services_dict, "ingress.yml")
+    write_to_yaml(services_dict, "output/ingress.yml")
 
 
 if __name__ == "__main__":
