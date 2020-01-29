@@ -93,5 +93,3 @@ def test_yaml_write(mocker):
     mocker.patch("combinedIngress.main.write_to_yaml", write_mock)
     runner.invoke(combine_ingress, ["test", "80", "example.org", "demo1", "demo2"])
     write_mock.assert_called_with(get_formatted_services_obj(), "ingress.yml")
-
-

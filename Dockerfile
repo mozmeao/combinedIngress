@@ -1,9 +1,5 @@
 FROM python:3.8-alpine
 
-
-#RUN apk --no-cache add python py-pip openssl ca-certificates
-
-
 COPY requirements.txt requirements.txt
 RUN pip install -r requirements.txt
 
