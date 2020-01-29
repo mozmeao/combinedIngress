@@ -1,7 +1,7 @@
 import yaml
 
 
-def ingress_controller_generate(services, ingress_namespace="demo-shared"):
+def ingress_controller_generate(services, ingress_namespace):
 
     # This is a nice list of services from the more complex object that includes some additional content
     dns_entries_list = [config["dns_entry"] for config in services]

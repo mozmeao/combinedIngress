@@ -2,7 +2,7 @@ apiVersion: voyager.appscode.com/v1beta1
 kind: Ingress
 metadata:
   name: ingress
-  namespace: demo-shared
+  namespace: demo-shared-test
   annotations:
    ingress.appscode.com/annotations-service: '{"external-dns.alpha.kubernetes.io/hostname" : "echo-demo.example.org,shared-demo.example.org"}'
 spec:

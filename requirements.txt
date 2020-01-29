@@ -1,3 +1,10 @@
-pytest>=5.3.4
+# Primary deps
+click
 pyyaml>=5.3
+
+# Testing deps
+
 pyfakefs>=3.7
+pytest>=5.3.4
+pytest-cov
+pytest-mock
