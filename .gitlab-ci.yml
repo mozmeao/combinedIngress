@@ -1,14 +1,22 @@
-docker-build-master:
-  # Official docker image.
-  image: docker:latest
+variables:
+  dockerhub_repo: "mozmeao/combinedingress"
+
+docker-build:
   stage: build
-  services:
-    - docker:dind
-#  before_script:
-#    - docker login -u "$CI_REGISTRY_USER" -p "$CI_REGISTRY_PASSWORD" $CI_REGISTRY
+  tags:
+    - oregon-b-shell
   script:
-    - echo 'test'
-#    - docker build --pull -t "$CI_REGISTRY_IMAGE" .
-#    - docker push "$CI_REGISTRY_IMAGE"
-#  only:
-#    - master
+    - docker build --pull -t "$dockerhub_repo:`cat VERSION`" .
+
+docker-push:
+  stage: deploy
+  tags:
+    - oregon-b-shell
+  script:
+    - docker tag "$dockerhub_repo:`cat VERSION`" "$dockerhub_repo:`cat VERSION | awk -F. '{print $1 }'"
+    - docker tag "$dockerhub_repo:`cat VERSION`" "$dockerhub_repo:latest"
+    - docker push "$dockerhub_repo:`cat VERSION`"
+    - docker push "$dockerhub_repo:`cat VERSION | awk -F. '{print $1 }'"
+    - docker push "$dockerhub_repo:latest"
+  only:
+    - master
