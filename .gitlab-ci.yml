@@ -16,7 +16,7 @@ docker-push:
     - docker tag "$dockerhub_repo:`cat VERSION`" "$dockerhub_repo:`cat VERSION | awk -F. '{print $1 }'`"
     - docker tag "$dockerhub_repo:`cat VERSION`" "$dockerhub_repo:latest"
     - docker push "$dockerhub_repo:`cat VERSION`"
-    - docker push "$dockerhub_repo:`cat VERSION | awk -F. '{print $1 }'"
+    - docker push "$dockerhub_repo:`cat VERSION | awk -F. '{print $1 }'`"
     - docker push "$dockerhub_repo:latest"
   only:
     - master
