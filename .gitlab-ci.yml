@@ -13,7 +13,7 @@ docker-push:
   tags:
     - oregon-b-shell
   script:
-    - docker tag "$dockerhub_repo:`cat VERSION`" "$dockerhub_repo:`cat VERSION | awk -F. '{print $1 }'"
+    - docker tag "$dockerhub_repo:`cat VERSION`" "$dockerhub_repo:`cat VERSION | awk -F. '{print $1 }'`"
     - docker tag "$dockerhub_repo:`cat VERSION`" "$dockerhub_repo:latest"
     - docker push "$dockerhub_repo:`cat VERSION`"
     - docker push "$dockerhub_repo:`cat VERSION | awk -F. '{print $1 }'"
