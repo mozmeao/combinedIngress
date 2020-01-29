@@ -3,10 +3,9 @@ variables:
 
 
 docker-build:
-  image: docker:latest
   stage: build
-  services:
-    - docker:dind
+  tags:
+    - oregon-b-shell
 #  before_script:
 #    - docker login -u "$CI_REGISTRY_USER" -p "$CI_REGISTRY_PASSWORD" $CI_REGISTRY
   script:
