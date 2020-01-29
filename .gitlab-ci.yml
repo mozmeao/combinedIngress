@@ -3,12 +3,10 @@ variables:
 
 docker-build:
   stage: build
-    tags:
-      - oregon-b-shell
-    script:
-      - docker build --pull -t "$dockerhub_repo:`cat VERSION`" .
-  #  only:
-  #    - master
+  tags:
+    - oregon-b-shell
+  script:
+    - docker build --pull -t "$dockerhub_repo:`cat VERSION`" .
 
 docker-push:
   stage: deploy
