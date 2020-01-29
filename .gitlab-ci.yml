@@ -1,5 +1,5 @@
 variables:
-  dockerhub_repo: "mozorg/combinedingress"
+  dockerhub_repo: "mozmeao/combinedingress"
 
 
 docker-build:
