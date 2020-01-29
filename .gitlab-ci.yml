@@ -1,5 +1,9 @@
+variables:
+  container_name: "combinedIngress"
+  dockerhub_repo: "mozorg/combinedIngress"
+
+
 docker-build:
-  # Official docker image.
   image: docker:latest
   stage: build
   services:
@@ -7,8 +11,7 @@ docker-build:
 #  before_script:
 #    - docker login -u "$CI_REGISTRY_USER" -p "$CI_REGISTRY_PASSWORD" $CI_REGISTRY
   script:
-    - cat VERSION
-#    - docker build --pull -t "$CI_REGISTRY_IMAGE" .
-#    - docker push "$CI_REGISTRY_IMAGE"
+    - docker build --pull -t "$container_name:`cat VERSION`" .
+    - docker push "$dockerhub_repo"
 #  only:
 #    - master
