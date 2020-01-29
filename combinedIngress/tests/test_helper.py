@@ -47,7 +47,7 @@ def get_services():
 
 
 def test_ingress_controller_generate():
-    real_code = ingress_controller_generate(get_services())
+    real_code = ingress_controller_generate(get_services(), "demo-shared-test")
     test_fixture = load_controller_yaml()
 
     for key, value in test_fixture.items():

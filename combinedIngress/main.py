@@ -26,7 +26,7 @@ def combine_ingress(servicename, port, dns_domain, sites):
         }
         services.append(service_dict)
 
-    services_dict = ingress_controller_generate(services)
+    services_dict = ingress_controller_generate(services, f"demo-shared-{servicename}")
     write_to_yaml(services_dict, "output/ingress.yml")
 
 

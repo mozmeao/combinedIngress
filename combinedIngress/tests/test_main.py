@@ -27,7 +27,7 @@ def get_formatted_services_obj():
         "kind": "Ingress",
         "metadata": {
             "name": "ingress",
-            "namespace": "demo-shared",
+            "namespace": "demo-shared-test",
             "annotations": {
                 "ingress.appscode.com/annotations-service": '{"external-dns.alpha.kubernetes.io/hostname" : "demo1.example.org,demo2.example.org"}'
             },
@@ -81,7 +81,7 @@ def test_ingress_controller_generates(mocker):
     mocker.patch("combinedIngress.main.write_to_yaml")
 
     runner.invoke(combine_ingress, ["test", "80", "example.org", "demo1", "demo2"])
-    generate_mock.assert_called_with(get_services_obj())
+    generate_mock.assert_called_with(get_services_obj(), "demo-shared-test")
     # make a magic mock and insert it here
 
     # then assert it was called correctly()
@@ -92,4 +92,4 @@ def test_yaml_write(mocker):
     write_mock = mocker.MagicMock()
     mocker.patch("combinedIngress.main.write_to_yaml", write_mock)
     runner.invoke(combine_ingress, ["test", "80", "example.org", "demo1", "demo2"])
-    write_mock.assert_called_with(get_formatted_services_obj(), "ingress.yml")
+    write_mock.assert_called_with(get_formatted_services_obj(), "output/ingress.yml")
