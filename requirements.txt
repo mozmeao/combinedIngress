@@ -1,10 +1,11 @@
 # Primary deps
-click
-pyyaml>=5.3
+click>=7.0, <8.0
+jinja2>=2.11.1, <3
+pyyaml>=5.3, <6
 
 # Testing deps
-
-pyfakefs>=3.7
-pytest>=5.3.4
-pytest-cov
-pytest-mock
+deepdiff>=4.2.0, <5
+pyfakefs>=3.7, <4
+pytest>=5.3.4, <6
+pytest-cov>=2.8.1, <3
+pytest-mock>=2.0.0, <3

@@ -1,37 +1,22 @@
 import yaml
 
+from jinja2 import Environment, FileSystemLoader
+
 
 def ingress_controller_generate(services, ingress_namespace):
-
     # This is a nice list of services from the more complex object that includes some additional content
     dns_entries_list = [config["dns_entry"] for config in services]
-    # Turning the list
-    dns_entries_string = ",".join(dns_entries_list)
-
-    annotations = {
-        "ingress.appscode.com/annotations-service": f'{{"external-dns.alpha.kubernetes.io/hostname" : "{dns_entries_string}"}}'
-    }
-
-    # Creating the yaml as a whole, and adding the CRD information/object creation
-    yaml = {"apiVersion": "voyager.appscode.com/v1beta1", "kind": "Ingress"}
-
-    # Creating the metadata section
-    metadata = {
-        "name": "ingress",
-        "namespace": ingress_namespace,
-        "annotations": annotations,
-    }
-    yaml["metadata"] = metadata
-
-    # Creating the spec section, and adding it to the yaml
-    spec = {}
-    tls = [{"secretName": "tls-example", "hosts": dns_entries_list}]
     rules = generate_rules(services)
-    spec["tls"] = tls
-    spec["rules"] = rules
-    yaml["spec"] = spec
 
-    return yaml
+    file_loader = FileSystemLoader("combinedIngress/templates")
+    env = Environment(loader=file_loader)
+    template = env.get_template("controller.yml.j2")
+
+    rendered_ingress_template = template.render(
+        dns_entries=dns_entries_list, namespace=ingress_namespace, rules=rules
+    )
+    # return as yaml to make sure this is valid yaml (doing the load/dump cycle)
+    return yaml.load(rendered_ingress_template, Loader=yaml.FullLoader)
 
 
 def generate_rules(services):
@@ -39,17 +24,9 @@ def generate_rules(services):
     for service_config in services:
         service_name = f"{service_config['ServiceName']}.{service_config['Namespace']}"
         rule = {
-            "host": service_config["dns_entry"],
-            "http": {
-                "paths": [
-                    {
-                        "backend": {
-                            "serviceName": service_name,
-                            "servicePort": service_config["port"],
-                        }
-                    }
-                ]
-            },
+            "service_name": service_name,
+            "dns_entry": service_config["dns_entry"],
+            "port": service_config["port"],
         }
         rules.append(rule)
 
