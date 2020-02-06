@@ -67,3 +67,14 @@ def test_write_to_yaml(fs):
     assert os.path.exists(out_file)
     with open(out_file, "r") as file:
         assert yaml.safe_load(file) == ["test"]
+
+
+def test_services_from_git_branch(mocker):
+    branch_mock = mocker.MagicMock()
+    branch_mock.configure_mock(name="demo/test-branch")
+    repo_mock = mocker.MagicMock()
+
+    mocker.patch("combinedIngress.helper.Repo", repo_mock)
+    repo_mock.return_value.branches = [branch_mock]
+
+    assert services_from_git_branch("demo/") == ["test-branch"]

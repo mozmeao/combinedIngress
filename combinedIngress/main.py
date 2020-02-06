@@ -2,20 +2,26 @@
 
 import click
 
-from combinedIngress.helper import ingress_controller_generate, write_to_yaml
+from combinedIngress.helper import (
+    ingress_controller_generate,
+    write_to_yaml,
+    services_from_git_branch,
+)
 
 
 @click.command()
 @click.argument("servicename")
 @click.argument("port")
 @click.argument("dns_domain")
-@click.argument("sites", nargs=-1)
-def combine_ingress(servicename, port, dns_domain, sites):
+@click.argument("prefix")
+def combine_ingress(servicename, port, dns_domain, prefix):
     click.echo(
-        "Starting run, service: %s, port: %s,  domain: %s sites: %s"
-        % (servicename, port, dns_domain, sites)
+        "Starting run, service: %s, port: %s,  domain: %s git_prefix: %s"
+        % (servicename, port, dns_domain, prefix)
     )
     services = []
+
+    sites = services_from_git_branch(prefix)
 
     for site in sites:
         service_dict = {
@@ -28,6 +34,7 @@ def combine_ingress(servicename, port, dns_domain, sites):
 
     services_dict = ingress_controller_generate(services, f"demo-shared-{servicename}")
     import pprint
+
     pp = pprint.PrettyPrinter(indent=4)
     pp.pprint(service_dict)
     write_to_yaml(services_dict, "output/ingress.yml")
