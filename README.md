@@ -9,7 +9,9 @@ Build/publish a docker container.  For local usage, this will work well:
  
  Then, run the container. (assuming you have an output dir, mkdir output), and the k8s service is named test.  You namespaces are demo1/demo2. Then you'll get these dns names, demo1.example.com, demo2.example.com pointing at these services.
  
- `docker run -v `PWD`/output:/output ci "test" "80" "example.org" "demo1" "demo2"`
+ We're using git to generate the list of websites.  Being pretty naive about that process, and taking just a prefix to find which branches are worth representing as demo websites.
+ 
+ `docker run -v `PWD`/output:/output -v `PWD`:/repo ci "test" "80" "example.org" "demo/"`
  
  A quick diagram of the way this works.  We're being opinionated about a few things, like the route53 entries being all in the same domain.  And the k8s namespace and left most part of the dns entry being identical. The k8s namespace of the ingress is per service, as a way of making it possible to reuse this project.
 
