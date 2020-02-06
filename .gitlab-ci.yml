@@ -13,10 +13,14 @@ docker-push:
   tags:
     - oregon-b-shell
   script:
-    - docker tag "$dockerhub_repo:`cat VERSION`" "$dockerhub_repo:`cat VERSION | awk -F. '{print $1 }'`"
-    - docker tag "$dockerhub_repo:`cat VERSION`" "$dockerhub_repo:latest"
-    - docker push "$dockerhub_repo:`cat VERSION`"
-    - docker push "$dockerhub_repo:`cat VERSION | awk -F. '{print $1 }'`"
+    - export version=`cat VERSION`
+    - export short_version=`cat VERSION | awk -F. '{print $1 }'`
+    - echo $version
+    - echo $short_version
+    - docker tag "$dockerhub_repo:$version" "$dockerhub_repo:$short_version"
+    - docker tag "$dockerhub_repo:$version" "$dockerhub_repo:latest"
+    - docker push "$dockerhub_repo:$version"
+    - docker push "$dockerhub_repo:$short_version"
     - docker push "$dockerhub_repo:latest"
   only:
     - master
