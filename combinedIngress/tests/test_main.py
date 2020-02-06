@@ -1,6 +1,5 @@
 from click.testing import CliRunner
 from deepdiff import DeepDiff
-import mock
 
 from combinedIngress.main import *
 

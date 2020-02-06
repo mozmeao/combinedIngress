@@ -71,22 +71,20 @@ def test_write_to_yaml(fs):
 
 def test_services_from_git_branch(mocker):
     branch_mock = mocker.MagicMock()
-    branch_mock.configure_mock(name="demo/test-branch")
+    branch_mock.branch.return_value = "origin/demo/test-branch\n"
     repo_mock = mocker.MagicMock()
-
+    repo_mock.return_value.git = branch_mock
     mocker.patch("combinedIngress.helper.Repo", repo_mock)
-    repo_mock.return_value.branches = [branch_mock]
 
     assert services_from_git_branch("demo/") == ["test-branch"]
 
 
 def test_services_from_git_branch_invalid_name(mocker):
     branch_mock = mocker.MagicMock()
-    branch_mock.configure_mock(name="demo/test.branch")
+    branch_mock.branch.return_value = "origin/demo/test.branch\n"
     repo_mock = mocker.MagicMock()
-
+    repo_mock.return_value.git = branch_mock
     mocker.patch("combinedIngress.helper.Repo", repo_mock)
-    repo_mock.return_value.branches = [branch_mock]
 
     with pytest.raises(ValueError):
         services_from_git_branch("demo/")

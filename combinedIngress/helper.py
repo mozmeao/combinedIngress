@@ -45,15 +45,21 @@ def validate_dns(dns_name):
 
     return True
 
+
 def services_from_git_branch(prefix):
+    prefix = f"origin/{prefix}"
     r = Repo("/repo")
     branch_names = []
-    for branch in r.branches:
-        name = branch.name
+    branches = r.git.branch("-r").split("\n")
+    for branch_name in branches:
+        branch_name = branch_name.strip()
+        name = branch_name
         if name.startswith(prefix):
-            dropped_prefix = name[len(prefix):]
+            dropped_prefix = name[len(prefix) :]
             if not validate_dns(dropped_prefix):
-                raise ValueError("Not a safe name for a website (slashes and dots not allowed)")
+                raise ValueError(
+                    "Not a safe name for a website (slashes and dots not allowed)"
+                )
             branch_names.append(dropped_prefix)
 
     return branch_names
