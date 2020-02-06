@@ -14,12 +14,9 @@ def load_controller_yaml():
 def rule_object():
     return [
         {
-            "host": "echo-demo.example.org",
-            "http": {
-                "paths": [
-                    {"backend": {"serviceName": "echoserver.dev", "servicePort": 80,}}
-                ]
-            },
+            "dns_entry": "echo-demo.example.org",
+            "port": 80,
+            "service_name": "echoserver.dev",
         }
     ]
 

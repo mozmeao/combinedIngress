@@ -1,4 +1,5 @@
 from click.testing import CliRunner
+from deepdiff import DeepDiff
 
 from combinedIngress.main import *
 
@@ -47,7 +48,7 @@ def get_formatted_services_obj():
                             {
                                 "backend": {
                                     "serviceName": "test.demo1",
-                                    "servicePort": "80",
+                                    "servicePort": 80,
                                 }
                             }
                         ]
@@ -60,7 +61,7 @@ def get_formatted_services_obj():
                             {
                                 "backend": {
                                     "serviceName": "test.demo2",
-                                    "servicePort": "80",
+                                    "servicePort": 80,
                                 }
                             }
                         ]
@@ -82,9 +83,6 @@ def test_ingress_controller_generates(mocker):
 
     runner.invoke(combine_ingress, ["test", "80", "example.org", "demo1", "demo2"])
     generate_mock.assert_called_with(get_services_obj(), "demo-shared-test")
-    # make a magic mock and insert it here
-
-    # then assert it was called correctly()
 
 
 def test_yaml_write(mocker):
