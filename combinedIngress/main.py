@@ -38,6 +38,3 @@ def combine_ingress(servicename, port, dns_domain, prefix):
 
 if __name__ == "__main__":
     combine_ingress()
-
-
-# ./script bedrock 80 mozmar.org demo1,demo2,demo3

@@ -38,12 +38,22 @@ def write_to_yaml(python_object, filepath):
         yaml.dump(python_object, file)
 
 
+def validate_dns(dns_name):
+    banned_chars = [".", "/", "\\"]
+    if any([c in dns_name for c in banned_chars]):
+        return False
+
+    return True
+
 def services_from_git_branch(prefix):
-    r = Repo()
+    r = Repo("/repo")
     branch_names = []
     for branch in r.branches:
         name = branch.name
         if name.startswith(prefix):
-            branch_names.append(name[len(prefix) :])
+            dropped_prefix = name[len(prefix):]
+            if not validate_dns(dropped_prefix):
+                raise ValueError("Not a safe name for a website (slashes and dots not allowed)")
+            branch_names.append(dropped_prefix)
 
     return branch_names

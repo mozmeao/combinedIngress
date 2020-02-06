@@ -1,5 +1,6 @@
 from click.testing import CliRunner
 from deepdiff import DeepDiff
+import mock
 
 from combinedIngress.main import *
 
@@ -39,7 +40,7 @@ def customer_setup(mocker):
     mocker.patch("combinedIngress.main.services_from_git_branch", services_mock)
 
     runner = CliRunner()
-    runner.invoke(combine_ingress, ["test", "80", "example.org", "demo/demo1"])
+    runner.invoke(combine_ingress, ["test", "80", "example.org", "demo/"])
 
 
 def test_ingress_controller_generates(mocker):
@@ -56,4 +57,4 @@ def test_yaml_write(mocker):
 
 def test_git_branch(mocker):
     customer_setup(mocker)
-    mocks["services_mock"].assert_called_with("demo/demo1")
+    mocks["services_mock"].assert_called_with("demo/")
