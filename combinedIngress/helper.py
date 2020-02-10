@@ -13,10 +13,13 @@ def ingress_controller_generate(services, ingress_namespace):
     template = env.get_template("controller.yml.j2")
 
     rendered_ingress_template = template.render(
-        dns_entries=dns_entries_list, namespace=ingress_namespace, rules=rules
+        dns_entries=dns_entries_list,
+        namespace=ingress_namespace,
+        rules=rules,
+        dns_domain=services[0]["domain"],
     )
     # return as yaml to make sure this is valid yaml (doing the load/dump cycle)
-    return yaml.load(rendered_ingress_template, Loader=yaml.FullLoader)
+    return yaml.load_all(rendered_ingress_template, Loader=yaml.FullLoader)
 
 
 def generate_rules(services):
@@ -35,7 +38,7 @@ def generate_rules(services):
 
 def write_to_yaml(python_object, filepath):
     with open(filepath, "w") as file:
-        yaml.dump(python_object, file)
+        yaml.dump_all(python_object, file)
 
 
 def validate_dns(dns_name):

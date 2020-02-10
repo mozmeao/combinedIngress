@@ -1,3 +1,4 @@
+---
 apiVersion: voyager.appscode.com/v1beta1
 kind: Ingress
 metadata:
@@ -7,7 +8,7 @@ metadata:
    ingress.appscode.com/annotations-service: '{"external-dns.alpha.kubernetes.io/hostname" : "echo-demo.example.org,shared-demo.example.org"}'
 spec:
   tls:
-  - secretName: tls-example
+  - secretName: example.org
     hosts:
     - echo-demo.example.org
     - shared-demo.example.org
@@ -24,3 +25,16 @@ spec:
       - backend:
           serviceName: hello.prod
           servicePort: 80
+---
+apiVersion: voyager.appscode.com/v1beta1
+kind: Certificate
+metadata:
+  name: example.org
+  namespace: demo-shared-test
+spec:
+  domains:
+  - '*.example.org'
+  acmeUserSecretName: acme-account
+  challengeProvider:
+    dns:
+      provider: route53

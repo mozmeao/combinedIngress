@@ -11,12 +11,14 @@ def get_services_obj():
             "Namespace": "demo1",
             "dns_entry": "demo1.example.org",
             "port": "80",
+            "domain": "example.org",
         },
         {
             "ServiceName": "test",
             "Namespace": "demo2",
             "dns_entry": "demo2.example.org",
             "port": "80",
+            "domain": "example.org",
         },
     ]
     return services

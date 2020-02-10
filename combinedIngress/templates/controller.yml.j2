@@ -1,3 +1,4 @@
+---
 apiVersion: voyager.appscode.com/v1beta1
 kind: Ingress
 metadata:
@@ -7,7 +8,7 @@ metadata:
    ingress.appscode.com/annotations-service: '{"external-dns.alpha.kubernetes.io/hostname" : "{{ ",".join(dns_entries) }}"}'
 spec:
   tls:
-  - secretName: tls-example
+  - secretName: {{ dns_domain }}
     hosts:{% for dns_entry in dns_entries %}
         - {{dns_entry}}{% endfor %}
   rules:{% for rule in rules %}
@@ -17,3 +18,16 @@ spec:
       - backend:
           serviceName: {{ rule["service_name"] }}
           servicePort: {{ rule["port"] }}{% endfor %}
+---
+apiVersion: voyager.appscode.com/v1beta1
+kind: Certificate
+metadata:
+  name: {{ dns_domain }}
+  namespace: {{ namespace }}
+spec:
+  domains:
+  - '*.{{ dns_domain }}'
+  acmeUserSecretName: acme-account
+  challengeProvider:
+    dns:
+      provider: route53

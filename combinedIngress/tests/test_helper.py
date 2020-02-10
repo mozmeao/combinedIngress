@@ -7,8 +7,8 @@ from combinedIngress.helper import *
 #### HELPER FUNCTIONS FOR THE TEST
 def load_controller_yaml():
     with open("./combinedIngress/tests/fixtures/controller.yml") as f:
-        data = yaml.load(f, Loader=yaml.FullLoader)
-        return data
+        data = yaml.load_all(f, Loader=yaml.FullLoader)
+        return list(data)
 
 
 def rule_object():
@@ -28,12 +28,14 @@ def get_services():
             "Namespace": "dev",
             "dns_entry": "echo-demo.example.org",
             "port": 80,
+            "domain": "example.org",
         },
         {
             "ServiceName": "hello",
             "Namespace": "prod",
             "dns_entry": "shared-demo.example.org",
             "port": 80,
+            "domain": "example.org",
         },
     ]
 
@@ -43,9 +45,12 @@ def get_services():
 #### END HELPER FUNCTIONS
 
 
-def test_ingress_controller_generate():
-    real_code = ingress_controller_generate(get_services(), "demo-shared-test")
-    test_fixture = load_controller_yaml()
+def test_ingress_controller_generate_doc_1():
+    real_code_docs = ingress_controller_generate(get_services(), "demo-shared-test")
+    test_fixture_docs = load_controller_yaml()
+
+    real_code = list(real_code_docs)[0]
+    test_fixture = test_fixture_docs[0]
 
     for key, value in test_fixture.items():
         assert key in real_code.keys()
@@ -66,7 +71,7 @@ def test_write_to_yaml(fs):
     write_to_yaml(["test"], out_file)
     assert os.path.exists(out_file)
     with open(out_file, "r") as file:
-        assert yaml.safe_load(file) == ["test"]
+        assert yaml.safe_load(file) == "test"
 
 
 def test_services_from_git_branch(mocker):

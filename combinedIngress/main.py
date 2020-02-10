@@ -23,12 +23,16 @@ def combine_ingress(servicename, port, dns_domain, prefix):
 
     sites = services_from_git_branch(prefix)
 
+    if len(sites) == 0:
+        raise ValueError('No valid branches found')
+
     for site in sites:
         service_dict = {
             "ServiceName": servicename,
             "Namespace": site,
             "dns_entry": f"{site}.{dns_domain}",
             "port": port,
+            "domain": dns_domain,
         }
         services.append(service_dict)
 
