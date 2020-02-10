@@ -8,7 +8,7 @@ metadata:
    ingress.appscode.com/annotations-service: '{"external-dns.alpha.kubernetes.io/hostname" : "echo-demo.example.org,shared-demo.example.org"}'
 spec:
   tls:
-  - secretName: example.org
+  - secretName: tls-example.org
     hosts:
     - echo-demo.example.org
     - shared-demo.example.org

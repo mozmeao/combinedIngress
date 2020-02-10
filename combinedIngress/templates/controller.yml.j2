@@ -8,7 +8,7 @@ metadata:
    ingress.appscode.com/annotations-service: '{"external-dns.alpha.kubernetes.io/hostname" : "{{ ",".join(dns_entries) }}"}'
 spec:
   tls:
-  - secretName: {{ dns_domain }}
+  - secretName: tls-{{ dns_domain }}
     hosts:{% for dns_entry in dns_entries %}
         - {{dns_entry}}{% endfor %}
   rules:{% for rule in rules %}
