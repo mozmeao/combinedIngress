@@ -41,7 +41,7 @@ def customer_setup(mocker):
     mocker.patch("combinedIngress.main.services_from_git_branch", services_mock)
 
     runner = CliRunner()
-    runner.invoke(combine_ingress, ["test", "80", "example.org", 'demo/', 'www'])
+    runner.invoke(combine_ingress, ["test", "80", "example.org", "demo/", "--service_prefix", "www"])
 
 
 def test_ingress_controller_generates(mocker):

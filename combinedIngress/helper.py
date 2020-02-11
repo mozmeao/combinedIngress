@@ -44,7 +44,7 @@ def write_to_yaml(python_object, filepath):
 
 
 def validate_dns(dns_name):
-    regex = re.compile('^(?![0-9]+$)(?!-)[a-zA-Z0-9-]{,63}(?<!-)$')
+    regex = re.compile("^(?![0-9]+$)(?!-)[a-zA-Z0-9-]{,63}(?<!-)$")
     return regex.match(dns_name) is not None
 
 
@@ -54,7 +54,7 @@ def services_from_git_branch(git_prefix):
     branches = r.git.branch("-r").split("\n")
     for branch_name in branches:
         branch_name = branch_name.strip()
-        name = branch_name[len('origin/'):]
+        name = branch_name[len("origin/") :]
         if name.startswith(git_prefix):
             slugified_name = slugify(name)
             if not validate_dns(slugified_name):

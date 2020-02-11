@@ -14,26 +14,26 @@ from combinedIngress.helper import (
 @click.argument("port")
 @click.argument("dns_domain")
 @click.argument("git_prefix")
-@click.argument("prefix")
-def combine_ingress(servicename, port, dns_domain, git_prefix, prefix):
+@click.option("--service_prefix", default=None)
+def combine_ingress(servicename, port, dns_domain, git_prefix, service_prefix):
+    print(f"++++++++++=\n\n\n\n++++++++++\n{service_prefix}\n++++++++++\n")
     click.echo(
         "Starting run, service: %s, port: %s,  domain: %s domain-prefix: %s"
-        % (servicename, port, dns_domain, prefix)
+        % (servicename, port, dns_domain, service_prefix)
     )
     services = []
 
     sites = services_from_git_branch(git_prefix)
 
     if len(sites) == 0:
-        raise ValueError('No valid branches found')
+        raise ValueError("No valid branches found")
 
     for site in sites:
 
-        if prefix:
-            dns_entry = f"{prefix}-{site}.{dns_domain}"
+        if service_prefix:
+            dns_entry = f"{service_prefix}-{site}.{dns_domain}"
         else:
             dns_entry = f"{site}.{dns_domain}"
-
 
         service_dict = {
             "ServiceName": servicename,
