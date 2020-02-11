@@ -9,14 +9,14 @@ def get_services_obj():
         {
             "ServiceName": "test",
             "Namespace": "demo1",
-            "dns_entry": "demo1.example.org",
+            "dns_entry": "www-demo1.example.org",
             "port": "80",
             "domain": "example.org",
         },
         {
             "ServiceName": "test",
             "Namespace": "demo2",
-            "dns_entry": "demo2.example.org",
+            "dns_entry": "www-demo2.example.org",
             "port": "80",
             "domain": "example.org",
         },
@@ -41,7 +41,7 @@ def customer_setup(mocker):
     mocker.patch("combinedIngress.main.services_from_git_branch", services_mock)
 
     runner = CliRunner()
-    runner.invoke(combine_ingress, ["test", "80", "example.org", "demo/"])
+    runner.invoke(combine_ingress, ["test", "80", "example.org", 'demo/', 'www'])
 
 
 def test_ingress_controller_generates(mocker):
@@ -58,4 +58,4 @@ def test_yaml_write(mocker):
 
 def test_git_branch(mocker):
     customer_setup(mocker)
-    mocks["services_mock"].assert_called_with("demo/")
+    mocks["services_mock"].assert_called()

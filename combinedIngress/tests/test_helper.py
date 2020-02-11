@@ -81,15 +81,37 @@ def test_services_from_git_branch(mocker):
     repo_mock.return_value.git = branch_mock
     mocker.patch("combinedIngress.helper.Repo", repo_mock)
 
-    assert services_from_git_branch("demo/") == ["test-branch"]
+    assert services_from_git_branch('demo/') == ["demo-test-branch"]
 
 
 def test_services_from_git_branch_invalid_name(mocker):
     branch_mock = mocker.MagicMock()
-    branch_mock.branch.return_value = "origin/demo/test.branch\n"
+    lots_of_xs = "x" * 65
+    branch_mock.branch.return_value = f"origin/demo/{lots_of_xs}\n"
     repo_mock = mocker.MagicMock()
     repo_mock.return_value.git = branch_mock
     mocker.patch("combinedIngress.helper.Repo", repo_mock)
 
     with pytest.raises(ValueError):
-        services_from_git_branch("demo/")
+        services_from_git_branch('demo/')
+
+def test_services_from_git_branch_unmatched_prefx(mocker):
+    branch_mock = mocker.MagicMock()
+    branch_mock.branch.return_value = "origin/fake/test-branch\n"
+    repo_mock = mocker.MagicMock()
+    repo_mock.return_value.git = branch_mock
+    mocker.patch("combinedIngress.helper.Repo", repo_mock)
+
+    assert services_from_git_branch('demo/') == []
+
+
+
+# def test_services_from_git_branch_invalid_name(mocker):
+#     branch_mock = mocker.MagicMock()
+#     branch_mock.branch.return_value = "origin/demo/1\n"
+#     repo_mock = mocker.MagicMock()
+#     repo_mock.return_value.git = branch_mock
+#     mocker.patch("combinedIngress.helper.Repo", repo_mock)
+#
+#     assert services_from_git_branch("demo-1") == ["demo-test-branch"]
+

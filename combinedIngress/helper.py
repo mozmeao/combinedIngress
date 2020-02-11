@@ -1,5 +1,7 @@
 from git import Repo
 from jinja2 import Environment, FileSystemLoader
+import re
+from slugify import slugify
 import yaml
 
 
@@ -42,27 +44,23 @@ def write_to_yaml(python_object, filepath):
 
 
 def validate_dns(dns_name):
-    banned_chars = [".", "/", "\\"]
-    if any([c in dns_name for c in banned_chars]):
-        return False
-
-    return True
+    regex = re.compile('^(?![0-9]+$)(?!-)[a-zA-Z0-9-]{,63}(?<!-)$')
+    return regex.match(dns_name) is not None
 
 
-def services_from_git_branch(prefix):
-    prefix = f"origin/{prefix}"
+def services_from_git_branch(git_prefix):
     r = Repo("/repo")
     branch_names = []
     branches = r.git.branch("-r").split("\n")
     for branch_name in branches:
         branch_name = branch_name.strip()
-        name = branch_name
-        if name.startswith(prefix):
-            dropped_prefix = name[len(prefix) :]
-            if not validate_dns(dropped_prefix):
+        name = branch_name[len('origin/'):]
+        if name.startswith(git_prefix):
+            slugified_name = slugify(name)
+            if not validate_dns(slugified_name):
                 raise ValueError(
                     "Not a safe name for a website (slashes and dots not allowed)"
                 )
-            branch_names.append(dropped_prefix)
+            branch_names.append(slugified_name)
 
     return branch_names
