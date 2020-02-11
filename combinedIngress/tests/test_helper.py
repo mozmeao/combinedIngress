@@ -105,12 +105,11 @@ def test_services_from_git_branch_unmatched_prefx(mocker):
 
     assert services_from_git_branch("demo/") == []
 
+def test_services_from_git_branch_duplicated_branches(mocker):
+    branch_mock = mocker.MagicMock()
+    branch_mock.branch.return_value = "origin/demo/test-branch\norigin/demo/test-Branch\n"
+    repo_mock = mocker.MagicMock()
+    repo_mock.return_value.git = branch_mock
+    mocker.patch("combinedIngress.helper.Repo", repo_mock)
 
-# def test_services_from_git_branch_invalid_name(mocker):
-#     branch_mock = mocker.MagicMock()
-#     branch_mock.branch.return_value = "origin/demo/1\n"
-#     repo_mock = mocker.MagicMock()
-#     repo_mock.return_value.git = branch_mock
-#     mocker.patch("combinedIngress.helper.Repo", repo_mock)
-#
-#     assert services_from_git_branch("demo-1") == ["demo-test-branch"]
+    assert services_from_git_branch("demo/") == ["demo-test-branch"]

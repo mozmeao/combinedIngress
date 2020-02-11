@@ -63,4 +63,4 @@ def services_from_git_branch(git_prefix):
                 )
             branch_names.append(slugified_name)
 
-    return branch_names
+    return list(set(branch_names))
