@@ -16,7 +16,6 @@ from combinedIngress.helper import (
 @click.argument("git_prefix")
 @click.option("--service_prefix", default=None)
 def combine_ingress(servicename, port, dns_domain, git_prefix, service_prefix):
-    print(f"++++++++++=\n\n\n\n++++++++++\n{service_prefix}\n++++++++++\n")
     click.echo(
         "Starting run, service: %s, port: %s,  domain: %s domain-prefix: %s"
         % (servicename, port, dns_domain, service_prefix)
