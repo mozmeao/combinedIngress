@@ -4,14 +4,14 @@ variables:
 docker-build:
   stage: build
   tags:
-    - oregon-b-shell
+    - mozmeao
   script:
     - docker build --pull -t "$dockerhub_repo:`cat VERSION`" .
 
 docker-push:
   stage: deploy
   tags:
-    - oregon-b-shell
+    - mozmeao
   script:
     - export version=`cat VERSION`
     - export short_version=`cat VERSION | awk -F. '{print $1 }'`
